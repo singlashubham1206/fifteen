@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Covid 19</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row" style="background-color:#FF6347;">
+        <div class="col-sm-12" style="font-family:'Comic Sans MS'; font-size: 40px;">
+          <center><b>Covid-19 Analysis</b></center>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+
+          <form class="" action="/home/search" method="post">
+            <div class="row" style="margin-top:20px;">
+              {% csrf_token %}
+                <div class="col-sm-10">
+                  <input class="form-control" type="search" name = "search_text" placeholder="Search" aria-label="Search">
+                </div>
+                <div class="col-sm-2">
+                  <button class="btn btn-outline-success" type="submit" style="margin-left:-20px;">Search</button>
+                </div>
+              </div>
+          </form>
+          {% if html_code %}
+          <div class="col-sm-10 mt-5 ml-2 mb-4">
+            <h1 style="font-family:'Comic Sans MS';"><center>{{state_name}}</center></h1>
+          </div>
+          <div class="col-sm-10 mt-4 ml-2" id = "state_map">
+            {{html_code|safe}}
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-6">
+          {% if img_name %}
+          <table class="table table-striped" style="margin-top:30px;margin-left:120px;">
+            <thead>
+              <tr>
+                <th>Confirmed</th>
+                <th>Recovered</th>
+                <th>Death</th>
+                <th>Active</th>
+              </tr>
+            </thead>
+            <tbody>
+               {% for key,value in total_state_data.iterrows %}
+              <tr>
+                <td>{{value.cf_Confirmed}}</td>
+                <td>{{value.cf_Recovered}}</td>
+                <td>{{value.cf_Deceased}}</td>
+                <td>{{value.cf_Active}}</td>
+              </tr>
+              {% endfor %}
+           </tbody>
+         </table>
+          <img src="../../static/images/output.png" alt="not found" width="1000px">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
